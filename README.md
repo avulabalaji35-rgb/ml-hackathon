@@ -26,17 +26,24 @@ This repository implements the complete Phase 1 deliverables:
 ## 2. Repository Structure
 ```
 ml-hackathon/
+├── DATASET.md                       # Comprehensive dataset specifications and datasheet
 ├── environment.yml                  # Conda environment definition (ml_hackathon)
 ├── requirements.txt                 # Pip dependency specifications
 ├── .gitignore                       # Ignored dataset binaries and build caches
 ├── README.md                        # Project documentation and reproduction guide
+├── data/                            # Dataset catalog, manifest, and sample data
+│   ├── README.md                    # Data setup and format guide
+│   ├── dataset_catalog.csv          # Metadata for all 90 trips
+│   ├── manifest.json                # JSON schema and partition manifests
+│   └── sample_data/                 # Self-contained sample trip (00000005)
 ├── notebooks/
 │   └── 01_exploratory_data_analysis.ipynb # Fully executed publication-grade EDA notebook
 ├── src/
 │   ├── __init__.py
 │   ├── data/
 │   │   ├── __init__.py
-│   │   └── loader.py                # Data loading, validation, and Haversine calculations
+│   │   ├── loader.py                # Data loading, validation, and Haversine calculations
+│   │   └── dataset.py               # PathSnapDataset high-level API
 │   └── visualization/
 │       ├── __init__.py
 │       └── folium_maps.py           # Multi-layer Folium interactive map builder
