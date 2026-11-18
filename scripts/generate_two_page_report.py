@@ -4,10 +4,10 @@ Produces a publication-grade, strictly 2-page PDF document for Team 10:
 reports/PathSnap_Two_Page_Report.pdf
 
 Team Members:
-- PES2UG24AM035 - AVULA BALAJI
-- PES2UG25AM810 - YASHAS V
-- PES2UG24AM056 - DURUGESH
-- PES2UG24AM051 - DEEPTI M AHUJA
+- PES2UG24AM035 - AVULA BALAJI (Backend Lead: Spatial Pipeline, Graphs & API Server)
+- PES2UG24AM056 - DURUGESH (Backend Lead: Machine Learning, Bayesian Optimization & HMM Engine)
+- PES2UG25AM810 - YASHAS V (Frontend Lead: UI Dashboard Architecture & System Documentation)
+- PES2UG24AM051 - DEEPTI M AHUJA (Frontend Lead: Interactive Map Visualization & EDA)
 Team No: 10
 GitHub: https://github.com/avulabalaji35-rgb/ml-hackathon
 """
@@ -76,11 +76,11 @@ def build_two_page_report():
         'RepSub',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8,
-        leading=10.5,
+        fontSize=7.8,
+        leading=10,
         textColor=colors.HexColor('#334155'),
         alignment=1,
-        spaceAfter=3
+        spaceAfter=2.5
     )
 
     sec_hdr = ParagraphStyle(
@@ -99,7 +99,7 @@ def build_two_page_report():
         parent=styles['Normal'],
         fontName='Helvetica',
         fontSize=7,
-        leading=9,
+        leading=8.8,
         textColor=colors.HexColor('#1e293b'),
         spaceAfter=2.5
     )
@@ -119,7 +119,7 @@ def build_two_page_report():
         parent=styles['Normal'],
         fontName='Helvetica',
         fontSize=6.2,
-        leading=7.5,
+        leading=7.4,
         textColor=colors.HexColor('#0f172a')
     )
 
@@ -128,7 +128,7 @@ def build_two_page_report():
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
         fontSize=6.2,
-        leading=7.5,
+        leading=7.4,
         textColor=colors.HexColor('#0f172a')
     )
 
@@ -141,10 +141,8 @@ def build_two_page_report():
     
     author_text = (
         "<b>Team 10 Members:</b> "
-        "AVULA BALAJI (PES2UG24AM035) • "
-        "YASHAS V (PES2UG25AM810) • "
-        "DURUGESH (PES2UG24AM056) • "
-        "DEEPTI M AHUJA (PES2UG24AM051)<br/>"
+        "<b>Backend:</b> AVULA BALAJI (PES2UG24AM035) & DURUGESH (PES2UG24AM056) • "
+        "<b>Frontend:</b> YASHAS V (PES2UG25AM810) & DEEPTI M AHUJA (PES2UG24AM051)<br/>"
         "<b>Repository:</b> <u>https://github.com/avulabalaji35-rgb/ml-hackathon</u> | "
         "<b>Status:</b> Fully Integrated, Tuned & Evaluator Validated"
     )
@@ -156,7 +154,7 @@ def build_two_page_report():
     p1_text = (
         "Vehicle GPS telemetry gathered in dense urban environments suffers from severe multipath reflections, "
         "satellite clock drift, canyon scattering, and signal dropouts. These physical anomalies manifest as artificial drifts "
-        "onto parallel alleys, sudden jumps across non-navigable blocks (speeds exceeding 140 km/h and instantaneous jumps up to 648 km/h), "
+        "onto parallel alleys, sudden jumps across non-navigable blocks (speeds exceeding 140 km/h with instantaneous jumps up to 648 km/h), "
         "and temporal gaps up to 300s+. <b>PathSnap</b> is an end-to-end distributed machine learning and sequential probabilistic inference system "
         "designed to accurately match noisy, asynchronous GPS fixes to an underlying directed road network graph <i>G = (V, E)</i>. "
         "The project delivers: (1) spatial candidate indexing via batch Shapely 2.0 STRtrees; (2) 14-dimensional kinematic and "
@@ -366,39 +364,39 @@ def build_two_page_report():
     )
     story.append(Paragraph(p6_text, body_style))
 
-    # Section 7: Team Division & Member Ownership (Team 10)
+    # Section 7: Team Division & Member Ownership (Team 10 - Backend: 035, 056 | Frontend: 810, 051)
     story.append(Paragraph("7. Team Workload Division & Individual Member Contributions (Team 10)", sec_hdr))
 
     team_data = [
         [
-            Paragraph("<b>Member ID & Name</b>", th_style),
+            Paragraph("<b>Track / Member ID & Name</b>", th_style),
             Paragraph("<b>Engineering Role</b>", th_style),
             Paragraph("<b>Core Modules & Codebase Owned</b>", th_style),
             Paragraph("<b>Key Quantitative Deliverable</b>", th_style)
         ],
         [
-            Paragraph("<b>PES2UG24AM035</b><br/>AVULA BALAJI", tb_bold),
-            Paragraph("Lead System Architect & Spatial Feature Lead", tb_style),
-            Paragraph("• Haversine distance engine (<code>src/data/loader.py</code>)<br/>• Batch STRtree candidate generation (R=35m)<br/>• 14-D spatial & kinematic extractor (<code>src/features/</code>)<br/>• Dataset catalog, schema & <code>DATASET.md</code>", tb_style),
-            Paragraph("Candidate search accelerated from 30s to <2s/trip; >98.5% recall at R=35m.", tb_style)
+            Paragraph("<b>[BACKEND LEAD]</b><br/><b>PES2UG24AM035</b><br/>AVULA BALAJI", tb_bold),
+            Paragraph("Spatial Pipeline, Graphs & API Server", tb_style),
+            Paragraph("• Haversine distance engine (<code>src/data/loader.py</code>)<br/>• Batch STRtree candidate generation (R=35m)<br/>• 14-D spatial/kinematic feature extractor (<code>src/features/</code>)<br/>• FastAPI server (<code>src/api/server.py</code>, <code>main.py</code>)<br/>• Dataset catalog, schemas & <code>DATASET.md</code>", tb_style),
+            Paragraph("Candidate search accelerated from 30s to <2s/trip; >98.5% recall; sub-70ms server evaluation API.", tb_style)
         ],
         [
-            Paragraph("<b>PES2UG25AM810</b><br/>YASHAS V", tb_bold),
-            Paragraph("Distributed Systems, UI & Technical Reporting Lead", tb_style),
-            Paragraph("• Two-Laptop distributed architecture (FastAPI)<br/>• Evaluator Web UI (<code>ui/index.html, style.css, app.js</code>)<br/>• Ground-truth quarantine enforcement<br/>• ReportLab technical report compilation script", tb_style),
-            Paragraph("Zero ground-truth leakage; sub-70ms API latency; publication-grade PDF report.", tb_style)
+            Paragraph("<b>[BACKEND LEAD]</b><br/><b>PES2UG24AM056</b><br/>DURUGESH", tb_bold),
+            Paragraph("Machine Learning, Bayesian Opt & HMM", tb_style),
+            Paragraph("• 5-Family benchmark suite (<code>scripts/train_compare_models.py</code>)<br/>• 5-Fold GroupKFold cross-validation engine<br/>• Optuna TPE Bayesian optimization (25 trials)<br/>• Map-matching HMM & Viterbi engine (<code>src/hmm/</code>)<br/>• Model binaries (<code>models/tuned_model.joblib</code>)", tb_style),
+            Paragraph("Lowest log loss (0.0983); 60.4% inference latency drop (80.5ms to 31.9ms); 99.80% route continuity.", tb_style)
         ],
         [
-            Paragraph("<b>PES2UG24AM056</b><br/>DURUGESH", tb_bold),
-            Paragraph("Machine Learning & Bayesian Optimization Lead", tb_style),
-            Paragraph("• 5-Family benchmark runner (<code>scripts/train_compare_models.py</code>)<br/>• 5-Fold GroupKFold cross-validation engine<br/>• Optuna TPE Bayesian optimization (25 trials)<br/>• Model serialization (<code>models/tuned_model.joblib</code>)", tb_style),
-            Paragraph("Lowest log loss (0.0983); 60.4% inference latency drop (80.5ms to 31.9ms).", tb_style)
+            Paragraph("<b>[FRONTEND LEAD]</b><br/><b>PES2UG25AM810</b><br/>YASHAS V", tb_bold),
+            Paragraph("UI Dashboard Architecture & Technical Reports", tb_style),
+            Paragraph("• Evaluator UI layout & design (<code>ui/index.html</code>, <code>style.css</code>)<br/>• Dynamic remote API resolution & KPI cards (<code>ui/app.js</code>)<br/>• Ground-truth quarantine client security verification<br/>• ReportLab 2-page & technical report compilation scripts", tb_style),
+            Paragraph("Zero ground-truth leakage; cross-origin remote laptop connection; publication-grade PDF report.", tb_style)
         ],
         [
-            Paragraph("<b>PES2UG24AM051</b><br/>DEEPTI M AHUJA", tb_bold),
-            Paragraph("Sequential Probabilistic Modeling & HMM Lead", tb_style),
-            Paragraph("• Map-Matching HMM formulation (<code>src/hmm/decoder.py</code>)<br/>• Calibrated emission probabilities & Gaussian decay<br/>• NetworkX shortest-path transition matrix & temporal scaling<br/>• Negative log-space dynamic Viterbi solver", tb_style),
-            Paragraph("Lifted route continuity from 77.15% to 99.80%; 94.75% Arc Precision/Recall.", tb_style)
+            Paragraph("<b>[FRONTEND LEAD]</b><br/><b>PES2UG24AM051</b><br/>DEEPTI M AHUJA", tb_bold),
+            Paragraph("Interactive Map Visuals & EDA Notebook", tb_style),
+            Paragraph("• Dual-layer Leaflet interactive trajectory map visualizer<br/>• Esri WorldStreetMap tiles resolving OSM 403 blocks<br/>• Multi-layer Folium map builder (<code>src/visualization/</code>)<br/>• EDA Jupyter notebook (<code>notebooks/01_*.ipynb</code>)<br/>• Trajectory popup telemetry & layer controls", tb_style),
+            Paragraph("Zero 403 tile errors; multi-layer trajectory overlays; fully executed 5.5MB EDA notebook.", tb_style)
         ]
     ]
     t_team = Table(team_data, colWidths=[90, 110, 180, 160])
@@ -407,6 +405,8 @@ def build_two_page_report():
         ('ALIGN', (0,0), (-1,-1), 'LEFT'),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor('#cbd5e1')),
+        ('BACKGROUND', (0,1), (-1,2), colors.HexColor('#f8fafc')), # Backend subtle tint
+        ('BACKGROUND', (0,3), (-1,4), colors.HexColor('#f0fdf4')), # Frontend subtle tint
         ('BOTTOMPADDING', (0,0), (-1,-1), 1.8),
         ('TOPPADDING', (0,0), (-1,-1), 1.8),
     ]))
