@@ -343,6 +343,21 @@ body {
   padding: 8px 0 4px;
 }
 
+/* Run history */
+.history-wrap { padding: 8px 20px 16px; overflow-x: auto; }
+.history-table { width: 100%; border-collapse: collapse; font-size: .85rem; font-variant-numeric: tabular-nums; }
+.history-table th {
+  text-align: left;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--muted);
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.history-table td { padding: 9px 8px; border-bottom: 1px solid var(--border); }
+.history-empty { color: var(--muted); font-size: .85rem; padding: 14px 0 4px; }
+
 /* Toasts */
 .toast-stack {
   position: fixed;

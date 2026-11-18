@@ -126,6 +126,23 @@
       </aside>
     </main>
 
+    <section class="card history-card">
+      <div class="panel-header">
+        <h2>Run history</h2>
+        <div class="action-buttons">
+          <button id="btn-export" class="btn btn-secondary" type="button">Export JSON</button>
+          <button id="btn-clear-history" class="btn btn-secondary" type="button">Clear</button>
+        </div>
+      </div>
+      <div class="history-wrap">
+        <table class="history-table">
+          <thead><tr><th>Time</th><th>Trip</th><th>Top-1</th><th>Continuity</th><th>Latency</th></tr></thead>
+          <tbody id="history-body"></tbody>
+        </table>
+        <p id="history-empty" class="history-empty">No runs yet. Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to evaluate the selected trip.</p>
+      </div>
+    </section>
+
     <footer class="app-footer">
       <p>PathSnap Distributed Machine Learning System &copy; 2026 PES University | Machine Learning UE24CS352A</p>
     </footer>

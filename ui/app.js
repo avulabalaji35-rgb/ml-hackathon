@@ -81,6 +81,50 @@ function introAnimation() {
     .add({ targets: ".app-footer", opacity: [0, 1], duration: 400 }, "-=200");
 }
 
+// ---------- Run history + export ----------
+const runHistory = [];
+
+function addHistory(data) {
+  runHistory.unshift({
+    time: new Date().toLocaleTimeString(),
+    trip: data.trip_id,
+    acc: data.top1_accuracy_percent,
+    cont: data.route_continuity_percent,
+    ms: data.inference_time_ms,
+    raw: data
+  });
+  if (runHistory.length > 20) runHistory.pop();
+  renderHistory();
+}
+
+function renderHistory() {
+  const body = document.getElementById("history-body");
+  const empty = document.getElementById("history-empty");
+  empty.classList.toggle("hidden", runHistory.length > 0);
+  body.innerHTML = "";
+  runHistory.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${r.time}</td><td>${r.trip}</td><td>${r.acc}%</td><td>${r.cont}%</td><td>${r.ms} ms</td>`;
+    body.appendChild(tr);
+  });
+  const first = body.firstElementChild;
+  if (first) anime({ targets: first, opacity: [0, 1], translateY: [-8, 0], duration: 400, easing: "easeOutQuad" });
+}
+
+function exportHistory() {
+  if (runHistory.length === 0) {
+    toast("Nothing to export yet. Run an evaluation first.", "error");
+    return;
+  }
+  const blob = new Blob([JSON.stringify(runHistory.map(r => r.raw), null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `pathsnap_results_${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast(`Exported ${runHistory.length} run(s) as JSON`, "success");
+}
+
 // ---------- Toasts ----------
 function toast(message, kind = "info", ttl = 3800) {
   const stack = document.getElementById("toast-stack");
@@ -299,6 +343,7 @@ async function runEvaluation() {
     foliumFrame.src = `${baseUrl}/api/map/${selectedTrip}`;
     showMapFrame(foliumFrame, mapContainer);
     toast(`Trip ${data.trip_id} evaluated in ${data.inference_time_ms} ms`, "success");
+    addHistory(data);
 
   } catch (err) {
     toast(`Evaluation failed: ${err.message}`, "error", 6000);
@@ -330,6 +375,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   btnEvaluate.title = "Ctrl+Enter";
+
+  document.getElementById("btn-export").addEventListener("click", exportHistory);
+  document.getElementById("btn-clear-history").addEventListener("click", () => {
+    runHistory.length = 0;
+    renderHistory();
+  });
 
   btnRefresh.addEventListener("click", fetchTrips);
   btnEvaluate.addEventListener("click", runEvaluation);
