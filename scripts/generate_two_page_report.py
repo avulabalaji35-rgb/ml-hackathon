@@ -22,7 +22,11 @@ from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether, HRFlowable
 )
 
-REPORT_PDF = "reports/PathSnap_Two_Page_Report.pdf"
+import shutil
+
+PRIMARY_PDF = "team-10 ml-hackathon.pdf"
+REPORTS_PDF = "reports/team-10 ml-hackathon.pdf"
+LEGACY_PDF = "reports/PathSnap_Two_Page_Report.pdf"
 
 
 def draw_decorations(canvas, doc):
@@ -50,7 +54,7 @@ def draw_decorations(canvas, doc):
 
 def build_two_page_report():
     doc = SimpleDocTemplate(
-        REPORT_PDF,
+        PRIMARY_PDF,
         pagesize=letter,
         leftMargin=36,
         rightMargin=36,
@@ -427,7 +431,12 @@ def build_two_page_report():
 
     # Build PDF with onFirstPage / onLaterPages
     doc.build(story, onFirstPage=draw_decorations, onLaterPages=draw_decorations)
-    print(f"Two-page report successfully built: {REPORT_PDF}")
+    
+    # Also replicate to reports/ directory and legacy path
+    shutil.copyfile(PRIMARY_PDF, REPORTS_PDF)
+    shutil.copyfile(PRIMARY_PDF, LEGACY_PDF)
+    print(f"Two-page report successfully built: {PRIMARY_PDF}")
+    print(f"Replicated to: {REPORTS_PDF} and {LEGACY_PDF}")
 
 
 if __name__ == "__main__":
