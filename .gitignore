@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+env/
+.env/
+miniconda3/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Hackathon raw dataset and student materials
+Student folder/
+PathSnap_student_materials/
+
+# Temporary run artifacts
+*.log
