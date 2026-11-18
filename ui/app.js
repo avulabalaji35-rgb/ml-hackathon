@@ -81,6 +81,23 @@ function introAnimation() {
     .add({ targets: ".app-footer", opacity: [0, 1], duration: 400 }, "-=200");
 }
 
+// ---------- Toasts ----------
+function toast(message, kind = "info", ttl = 3800) {
+  const stack = document.getElementById("toast-stack");
+  const el = document.createElement("div");
+  el.className = `toast toast-${kind}`;
+  el.textContent = message;
+  el.style.opacity = 0;
+  stack.appendChild(el);
+  anime({ targets: el, opacity: [0, 1], translateX: [40, 0], duration: 380, easing: "easeOutBack" });
+  setTimeout(() => {
+    anime({
+      targets: el, opacity: 0, translateX: 40, duration: 260, easing: "easeInQuad",
+      complete: () => el.remove()
+    });
+  }, ttl);
+}
+
 // ---------- Theme toggle (persisted) ----------
 function currentTheme() {
   const forced = document.documentElement.getAttribute("data-theme");
@@ -209,7 +226,7 @@ async function runEvaluation() {
   const baseUrl = apiUrlInput.value.trim().replace(/\/$/, "");
   const selectedTrip = tripSelect.value;
   if (!selectedTrip) {
-    alert("Please select a trip first.");
+    toast("Please select a trip first.", "error");
     return;
   }
 
@@ -281,9 +298,10 @@ async function runEvaluation() {
 
     foliumFrame.src = `${baseUrl}/api/map/${selectedTrip}`;
     showMapFrame(foliumFrame, mapContainer);
+    toast(`Trip ${data.trip_id} evaluated in ${data.inference_time_ms} ms`, "success");
 
   } catch (err) {
-    alert(`Evaluation failed: ${err.message}`);
+    toast(`Evaluation failed: ${err.message}`, "error", 6000);
     infoMsg.textContent = `Error: ${err.message}`;
     console.error("Evaluation error:", err);
   } finally {
@@ -303,6 +321,15 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   wireButtonMotion();
   fetchTrips();
+
+  // Keyboard shortcut: Ctrl/Cmd+Enter runs the evaluation
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      if (!btnEvaluate.disabled) runEvaluation();
+    }
+  });
+  btnEvaluate.title = "Ctrl+Enter";
 
   btnRefresh.addEventListener("click", fetchTrips);
   btnEvaluate.addEventListener("click", runEvaluation);
