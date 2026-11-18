@@ -35,8 +35,33 @@ def create_trip_map(trip, max_network_arcs=2000, show_network=True):
     m = folium.Map(
         location=[center_lat, center_lon],
         zoom_start=15,
-        tiles='OpenStreetMap'
+        tiles=None
     )
+
+    # Base Tile Layers (Uses Esri/ArcGIS which allow direct file:/// access without API keys)
+    folium.TileLayer(
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+        attr="Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS",
+        name="Esri World Street Map",
+        overlay=False,
+        control=True
+    ).add_to(m)
+
+    folium.TileLayer(
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        attr="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ",
+        name="Esri Light Canvas (Clean)",
+        overlay=False,
+        control=True
+    ).add_to(m)
+
+    folium.TileLayer(
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+        attr="Tiles &copy; Esri",
+        name="Esri World Topo Map",
+        overlay=False,
+        control=True
+    ).add_to(m)
 
     # 1. Road Network Layer (Background)
     if show_network and arcs_df is not None and len(arcs_df) > 0:
