@@ -19,6 +19,7 @@ Thumbs.db
 # Hackathon raw dataset and student materials
 Student folder/
 PathSnap_student_materials/
+evaluator_test/
 
 # Temporary run artifacts
 *.log
