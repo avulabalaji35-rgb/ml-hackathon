@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PathSnap — Distributed Map-Matching & Route Reconstruction</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
   <!-- Leaflet CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -16,8 +17,8 @@
       <div class="logo-group">
         <div class="logo-badge">PES</div>
         <div class="header-titles">
-          <h1>PathSnap: Distributed Map-Matching Dashboard</h1>
-          <p class="subtitle">UE24CS352A Machine Learning — Evaluator Client (Laptop 2)</p>
+          <h1>PathSnap</h1>
+          <p class="subtitle">Distributed map-matching &amp; route reconstruction · Evaluator client</p>
         </div>
       </div>
       <div class="header-status">
@@ -29,20 +30,20 @@
     <section class="toolbar-card">
       <div class="control-row">
         <div class="input-field">
-          <label for="api-url">API Endpoint (Laptop 1):</label>
+          <label for="api-url">API endpoint</label>
           <input type="text" id="api-url" value="http://localhost:8000" placeholder="http://192.168.x.x:8000">
         </div>
 
         <div class="input-field">
-          <label for="trip-select">Reserved Evaluation Trip:</label>
+          <label for="trip-select">Evaluation trip</label>
           <select id="trip-select">
             <option value="" disabled selected>Loading trips from API...</option>
           </select>
         </div>
 
         <div class="action-buttons">
-          <button id="btn-refresh" class="btn btn-secondary">Refresh Trips</button>
-          <button id="btn-evaluate" class="btn btn-primary">Run Map-Matching & Evaluation</button>
+          <button id="btn-refresh" class="btn btn-secondary">Refresh trips</button>
+          <button id="btn-evaluate" class="btn btn-primary">Run evaluation</button>
         </div>
       </div>
     </section>
@@ -50,25 +51,27 @@
     <!-- Metrics Cards Grid -->
     <section class="metrics-grid">
       <div class="metric-card">
-        <div class="metric-title">Observation Top-1 Accuracy</div>
+        <div class="metric-title">Top-1 accuracy</div>
         <div class="metric-value text-accent" id="metric-acc">--%</div>
+        <div class="meter"><span id="bar-acc"></span></div>
         <div class="metric-desc">Pointwise candidate matching accuracy</div>
       </div>
 
       <div class="metric-card">
-        <div class="metric-title">Route Topological Continuity</div>
+        <div class="metric-title">Route continuity</div>
         <div class="metric-value text-green" id="metric-cont">--%</div>
+        <div class="meter green"><span id="bar-cont"></span></div>
         <div class="metric-desc">Consecutive connecting segments</div>
       </div>
 
       <div class="metric-card">
-        <div class="metric-title">Inference & Decode Latency</div>
+        <div class="metric-title">Inference latency</div>
         <div class="metric-value" id="metric-time">-- ms</div>
         <div class="metric-desc">Complete end-to-end processing time</div>
       </div>
 
       <div class="metric-card">
-        <div class="metric-title">Reconstructed Route Arcs</div>
+        <div class="metric-title">Reconstructed arcs</div>
         <div class="metric-value" id="metric-arcs">-- / --</div>
         <div class="metric-desc">Decoded arcs vs Ground-Truth arcs</div>
       </div>
@@ -79,7 +82,7 @@
       <!-- Interactive Map Pane -->
       <div class="map-panel card">
         <div class="panel-header">
-          <h2>Spatial Trajectory & Route Reconstruction Map</h2>
+          <h2>Route reconstruction map</h2>
           <div class="map-legend">
             <span class="legend-item"><span class="dot dot-blue"></span> GPS Observations</span>
             <span class="legend-item"><span class="line line-green"></span> Ground-Truth Route</span>
@@ -93,28 +96,28 @@
       <!-- Telemetry and Sequence Inspection Panel -->
       <aside class="details-panel card">
         <div class="panel-header">
-          <h2>Evaluation Telemetry</h2>
+          <h2>Telemetry</h2>
         </div>
         <div class="details-content">
           <div class="info-group">
-            <span class="info-label">Selected Trip:</span>
+            <span class="info-label">Trip</span>
             <span class="info-val" id="info-trip">None</span>
           </div>
           <div class="info-group">
-            <span class="info-label">GPS Observations Processed:</span>
+            <span class="info-label">GPS observations</span>
             <span class="info-val" id="info-fixes">--</span>
           </div>
           <div class="info-group">
-            <span class="info-label">Server Response Message:</span>
+            <span class="info-label">Server message</span>
             <span class="info-val" id="info-msg">Idle. Awaiting trip evaluation trigger.</span>
           </div>
 
-          <h3 class="section-title">Decoded Sequence Preview (First 15 Arcs)</h3>
+          <h3 class="section-title">Decoded arcs (preview)</h3>
           <div class="sequence-box" id="sequence-preview">
             [Awaiting evaluation run...]
           </div>
 
-          <h3 class="section-title">Ground Truth Sequence (First 15 Arcs)</h3>
+          <h3 class="section-title">Ground-truth arcs (preview)</h3>
           <div class="sequence-box" id="gt-sequence-preview">
             [Ground-truth preserved server-side]
           </div>
