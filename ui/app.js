@@ -81,6 +81,34 @@ function introAnimation() {
     .add({ targets: ".app-footer", opacity: [0, 1], duration: 400 }, "-=200");
 }
 
+// ---------- Theme toggle (persisted) ----------
+function currentTheme() {
+  const forced = document.documentElement.getAttribute("data-theme");
+  if (forced) return forced;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function initTheme() {
+  try {
+    const saved = localStorage.getItem("pathsnap-theme");
+    if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+  } catch (e) { /* storage unavailable */ }
+
+  const btn = document.getElementById("btn-theme");
+  btn.addEventListener("click", () => {
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    anime({
+      targets: ".app-container", opacity: [1, 0.35], duration: 140, easing: "easeInQuad",
+      complete: () => {
+        document.documentElement.setAttribute("data-theme", next);
+        try { localStorage.setItem("pathsnap-theme", next); } catch (e) { /* ignore */ }
+        anime({ targets: ".app-container", opacity: [0.35, 1], duration: 320, easing: "easeOutQuad" });
+      }
+    });
+    anime({ targets: btn, rotate: "+=180", duration: 450, easing: "easeOutBack" });
+  });
+}
+
 function wireButtonMotion() {
   document.querySelectorAll(".btn").forEach(btn => {
     btn.addEventListener("mouseenter", () => anime({ targets: btn, scale: 1.04, translateY: -1, duration: 180, easing: "easeOutQuad" }));
@@ -272,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   initMap();
   introAnimation();
+  initTheme();
   wireButtonMotion();
   fetchTrips();
 
