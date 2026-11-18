@@ -173,6 +173,10 @@ async function runEvaluation() {
 
 // Event Listeners
 document.addEventListener("DOMContentLoaded", () => {
+  // If loaded via HTTP (e.g. from Laptop 1's server), automatically use the current origin
+  if (window.location.protocol.startsWith("http")) {
+    apiUrlInput.value = window.location.origin;
+  }
   initMap();
   fetchTrips();
 
